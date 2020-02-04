@@ -5,118 +5,151 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HashCalc"
         mc:Ignorable="d"
-        Title="HashCalc" Height="600" Width="400">
-    <Border Padding="10">
-        <StackPanel>
+        Title="HashCalc" MinHeight="500" Height="585" Width="400">
+    <Border Padding="5">
+        <TabControl>
+            <TabItem Name="CalculateTab" Header="Calculate">
+                <Grid Name="MainCalculateGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="130"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="84"/>
+                    </Grid.RowDefinitions>
 
-            <TextBlock Text="Input" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"></TextBlock>
-            <ListBox>
-                <ListBoxItem>File1In</ListBoxItem>
-                <ListBoxItem>File2In</ListBoxItem>
-                <ListBoxItem>File3In</ListBoxItem>
-                <ListBoxItem>File4In</ListBoxItem>
-                <ListBoxItem>File5In</ListBoxItem>
-            </ListBox>
-            
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="1.25*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="1.25*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" SelectionMode="Extended">
+                            <ListBoxItem Content="Item1" />
+                            <ListBoxItem Content="Item2" />
+                            <ListBoxItem Content="Item3" />
+                            <ListBoxItem Content="Item4" />
+                            <ListBoxItem Content="Item5" />
+                            <ListBoxItem Content="Item6" />
+                        </ListBox>
+                        <Button Margin="0 2" Grid.Row="1" Grid.Column="1" Name="AddButton" Content="Add" />
+                        <Button Margin="0 2" Grid.Row="1" Grid.Column="3" Name="RemoveButton" Content="Remove" />
+                    </Grid>
 
-                <Button Content="Add" Grid.Column="1" Margin="0 5" />
-                <Button Content="Remove" Grid.Column="3" Margin="0 5" />
-            </Grid>
+                    <Grid Grid.Row="2" Margin="0 5 0 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                        <CheckBox Margin="0 2" Name="ScanCRC32" Content="CRC-32" Grid.Column="1" Grid.Row="0" />
+                        <CheckBox Margin="0 2" Name="ScanCRC64" Content="CRC-64" Grid.Column="1" Grid.Row="1" />
+                        <CheckBox Margin="0 2" Name="ScanMD2" Content="MD2" Grid.Column="1" Grid.Row="2" />
+                        <CheckBox Margin="0 2" Name="ScanMD4" Content="MD4" Grid.Column="1" Grid.Row="3" />
+                        <CheckBox Margin="0 2" Name="ScanMD5" Content="MD5" Grid.Column="1" Grid.Row="4" />
+                        <CheckBox Margin="0 2" Name="ScanBLAKE2sp" Content="BLAKE2sp" Grid.Column="3" Grid.Row="0" />
+                        <CheckBox Margin="0 2" Name="ScanSHA1" Content="SHA-1" Grid.Column="3" Grid.Row="1" />
+                        <CheckBox Margin="0 2" Name="ScanSHA256" Content="SHA-256" Grid.Column="3" Grid.Row="2" />
+                        <CheckBox Margin="0 2" Name="ScanSHA384" Content="SHA-384" Grid.Column="3" Grid.Row="3" />
+                        <CheckBox Margin="0 2" Name="ScanSHA512" Content="SHA-512" Grid.Column="3" Grid.Row="4" />
 
+                        <Button Margin="0 2" Grid.Column="2" Grid.Row="5" Name="CalculateButton" Content="Calculate" />
+                    </Grid>
 
-                <CheckBox Margin="0 3" Name="CRC32" Content="CRC-32" Grid.Column="1" Grid.Row="0" />
-                <CheckBox Margin="0 3" Name="CRC64" Content="CRC-64" Grid.Column="1" Grid.Row="1" />
-                <CheckBox Margin="0 3" Name="MD2" Content="MD2" Grid.Column="1" Grid.Row="2" />
-                <CheckBox Margin="0 3" Name="MD4" Content="MD4" Grid.Column="1" Grid.Row="3" />
-                <CheckBox Margin="0 3" Name="MD5" Content="MD5" Grid.Column="1" Grid.Row="4" />
-                <CheckBox Margin="0 3" Name="BLAKE2sp" Content="BLAKE2sp" Grid.Column="3" Grid.Row="0" />
-                <CheckBox Margin="0 3" Name="SHA1" Content="SHA-1" Grid.Column="3" Grid.Row="1" />
-                <CheckBox Margin="0 3" Name="SHA256" Content="SHA-256" Grid.Column="3" Grid.Row="2" />
-                <CheckBox Margin="0 3" Name="SHA384" Content="SHA-384" Grid.Column="3" Grid.Row="3" />
-                <CheckBox Margin="0 3" Name="SHA512" Content="SHA-512" Grid.Column="3" Grid.Row="4" />
-            </Grid>
+                    <Separator Grid.Row="3" VerticalAlignment="Center" />
 
-            <Separator></Separator>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5">
+                            <ListBoxItem Content="Item1" />
+                            <ListBoxItem Content="Item2" />
+                            <ListBoxItem Content="Item3" />
+                            <ListBoxItem Content="Item4" />
+                            <ListBoxItem Content="Item5" />
+                            <ListBoxItem Content="Item6" />
+                        </ListBox>
+                        <Button Margin="0 2" Grid.Row="1" Grid.Column="1" Name="ExportExcelButton" Content="Export to Excel" />
+                        <Button Margin="0 2" Grid.Row="1" Grid.Column="3" Name="ExportCsvButton" Content="Export to CSV" />
+                    </Grid>
 
-            <TextBlock Text="Results" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"></TextBlock>
-            <ListBox>
-                <ListBoxItem>File1Out</ListBoxItem>
-                <ListBoxItem>File2Out</ListBoxItem>
-                <ListBoxItem>File3Out</ListBoxItem>
-                <ListBoxItem>File4Out</ListBoxItem>
-                <ListBoxItem>File5Out</ListBoxItem>
-            </ListBox>
+                    <Grid Grid.Row="6">
 
-            <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="65" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="21" />
+                            <RowDefinition Height="21" />
+                            <RowDefinition Height="21" />
+                            <RowDefinition Height="21" />
+                        </Grid.RowDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                        <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Text="CRC-32 " />
+                        <TextBox Name="CRC32Result" Grid.Column="1" Grid.Row="0" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Text="CRC-64 " />
+                        <TextBox Name="CRC64Result" Grid.Column="1" Grid.Row="1" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Text="MD2 " />
+                        <TextBox Name="MD2Result" Grid.Column="1" Grid.Row="2" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Text="MD4 " />
+                        <TextBox Name="MD4Result" Grid.Column="1" Grid.Row="3" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Text="MD5 " />
+                        <TextBox Name="MD5Result" Grid.Column="3" Grid.Row="0" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right" Text="BLAKE2sp " />
+                        <TextBox Name="BLAKE2spResult" Grid.Column="3" Grid.Row="1" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Text="SHA-1 " />
+                        <TextBox Name="SHA1Result" Grid.Column="3" Grid.Row="2" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" Text="SHA-256 " />
+                        <TextBox Name="SHA256Result" Grid.Column="3" Grid.Row="3" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="0" HorizontalAlignment="Right" Text="SHA-384 " />
+                        <TextBox Name="SHA384Result" Grid.Column="5" Grid.Row="0" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Right" Text="SHA-512 " />
+                        <TextBox Name="SHA512Result" Grid.Column="5" Grid.Row="1" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Right" Text="BLANK " />
+                        <TextBox Name="BlankResult1" Grid.Column="5" Grid.Row="2" IsReadOnly="True" Background="LightGray" />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Right" Text="BLANK " />
+                        <TextBox Name="BlankResult2" Grid.Column="5" Grid.Row="3" IsReadOnly="True" Background="LightGray" />
 
-                <TextBox Name="Result11Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="0" />
-                <TextBox Name="Result12Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="0" />
-                <TextBox Name="Result13Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="0" />
-                <TextBox Name="Result21Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="1" />
-                <TextBox Name="Result22Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="1" />
-                <TextBox Name="Result23Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="1" />
-                <TextBox Name="Result31Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="2" />
-                <TextBox Name="Result32Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="2" />
-                <TextBox Name="Result33Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="2" />
-                <TextBox Name="Result41Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="3" />
-                <TextBox Name="Result42Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="3" />
-                <TextBox Name="Result43Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="3" />
+                    </Grid>
 
-            </Grid>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="1.25*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="1.25*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Button Content="Export to Excel" Grid.Column="1" Margin="0 5" />
-                <Button Content="Export to CSV" Grid.Column="3" Margin="0 5" />
-            </Grid>
-
-        </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Name="BatchCompareTab" Header="Batch Compare"></TabItem>
+            <TabItem Name="SettingsTab" Header="Settings"></TabItem>
+        </TabControl>
     </Border>
 </Window>
