@@ -5,8 +5,118 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HashCalc"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="HashCalc" Height="600" Width="400">
+    <Border Padding="10">
+        <StackPanel>
 
-    </Grid>
+            <TextBlock Text="Input" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"></TextBlock>
+            <ListBox>
+                <ListBoxItem>File1In</ListBoxItem>
+                <ListBoxItem>File2In</ListBoxItem>
+                <ListBoxItem>File3In</ListBoxItem>
+                <ListBoxItem>File4In</ListBoxItem>
+                <ListBoxItem>File5In</ListBoxItem>
+            </ListBox>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1.25*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1.25*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Add" Grid.Column="1" Margin="0 5" />
+                <Button Content="Remove" Grid.Column="3" Margin="0 5" />
+            </Grid>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+
+                <CheckBox Margin="0 3" Name="CRC32" Content="CRC-32" Grid.Column="1" Grid.Row="0" />
+                <CheckBox Margin="0 3" Name="CRC64" Content="CRC-64" Grid.Column="1" Grid.Row="1" />
+                <CheckBox Margin="0 3" Name="MD2" Content="MD2" Grid.Column="1" Grid.Row="2" />
+                <CheckBox Margin="0 3" Name="MD4" Content="MD4" Grid.Column="1" Grid.Row="3" />
+                <CheckBox Margin="0 3" Name="MD5" Content="MD5" Grid.Column="1" Grid.Row="4" />
+                <CheckBox Margin="0 3" Name="BLAKE2sp" Content="BLAKE2sp" Grid.Column="3" Grid.Row="0" />
+                <CheckBox Margin="0 3" Name="SHA1" Content="SHA-1" Grid.Column="3" Grid.Row="1" />
+                <CheckBox Margin="0 3" Name="SHA256" Content="SHA-256" Grid.Column="3" Grid.Row="2" />
+                <CheckBox Margin="0 3" Name="SHA384" Content="SHA-384" Grid.Column="3" Grid.Row="3" />
+                <CheckBox Margin="0 3" Name="SHA512" Content="SHA-512" Grid.Column="3" Grid.Row="4" />
+            </Grid>
+
+            <Separator></Separator>
+
+            <TextBlock Text="Results" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"></TextBlock>
+            <ListBox>
+                <ListBoxItem>File1Out</ListBoxItem>
+                <ListBoxItem>File2Out</ListBoxItem>
+                <ListBoxItem>File3Out</ListBoxItem>
+                <ListBoxItem>File4Out</ListBoxItem>
+                <ListBoxItem>File5Out</ListBoxItem>
+            </ListBox>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBox Name="Result11Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="0" />
+                <TextBox Name="Result12Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="0" />
+                <TextBox Name="Result13Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="0" />
+                <TextBox Name="Result21Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="1" />
+                <TextBox Name="Result22Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="1" />
+                <TextBox Name="Result23Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="1" />
+                <TextBox Name="Result31Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="2" />
+                <TextBox Name="Result32Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="2" />
+                <TextBox Name="Result33Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="2" />
+                <TextBox Name="Result41Text" IsReadOnly="True" Background="LightGray" Grid.Column="1" Grid.Row="3" />
+                <TextBox Name="Result42Text" IsReadOnly="True" Background="LightGray" Grid.Column="3" Grid.Row="3" />
+                <TextBox Name="Result43Text" IsReadOnly="True" Background="LightGray" Grid.Column="5" Grid.Row="3" />
+
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1.25*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1.25*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Export to Excel" Grid.Column="1" Margin="0 5" />
+                <Button Content="Export to CSV" Grid.Column="3" Margin="0 5" />
+            </Grid>
+
+        </StackPanel>
+    </Border>
 </Window>
