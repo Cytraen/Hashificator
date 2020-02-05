@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HashCalc"
         mc:Ignorable="d"
-        Title="HashCalc" MinHeight="500" Height="585" Width="400">
+        Title="HashCalc" MinHeight="525" Height="610" Width="400">
     <Border Padding="5">
         <TabControl>
             <TabItem x:Name="CalculateTab" Header="Calculate">
@@ -17,7 +17,7 @@
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="5"/>
-                        <RowDefinition Height="84"/>
+                        <RowDefinition Height="105"/>
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0">
@@ -54,12 +54,12 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <CheckBox Margin="0 2" Grid.Column="1" Grid.Row="0" x:Name="CalculateTab_ScanCRC32CheckBox" Content="CRC-32" />
-                        <CheckBox Margin="0 2" Grid.Column="1" Grid.Row="1" x:Name="CalculateTab_ScanCRC64CheckBox" Content="CRC-64" />
+                        <CheckBox IsEnabled="False" Margin="0 2" Grid.Column="1" Grid.Row="0" x:Name="CalculateTab_ScanCRC32CheckBox" Content="CRC-32" />
+                        <CheckBox IsEnabled="False" Margin="0 2" Grid.Column="1" Grid.Row="1" x:Name="CalculateTab_ScanCRC64CheckBox" Content="CRC-64" />
                         <CheckBox Margin="0 2" Grid.Column="1" Grid.Row="2" x:Name="CalculateTab_ScanMD2CheckBox" Content="MD2" />
                         <CheckBox Margin="0 2" Grid.Column="1" Grid.Row="3" x:Name="CalculateTab_ScanMD4CheckBox" Content="MD4" />
                         <CheckBox Margin="0 2" Grid.Column="1" Grid.Row="4" x:Name="CalculateTab_ScanMD5CheckBox" Content="MD5" />
-                        <CheckBox Margin="0 2" Grid.Column="3" Grid.Row="0" x:Name="CalculateTab_ScanBLAKE2spCheckBox" Content="BLAKE2sp" />
+                        <CheckBox IsEnabled="False" Margin="0 2" Grid.Column="3" Grid.Row="0" x:Name="CalculateTab_ScanBLAKE2spCheckBox" Content="BLAKE2sp" />
                         <CheckBox Margin="0 2" Grid.Column="3" Grid.Row="1" x:Name="CalculateTab_ScanSHA1CheckBox" Content="SHA-1" />
                         <CheckBox Margin="0 2" Grid.Column="3" Grid.Row="2" x:Name="CalculateTab_ScanSHA256CheckBox" Content="SHA-256" />
                         <CheckBox Margin="0 2" Grid.Column="3" Grid.Row="3" x:Name="CalculateTab_ScanSHA384CheckBox" Content="SHA-384" />
@@ -73,18 +73,18 @@
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="25"/>
                         </Grid.RowDefinitions>
-                        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" x:Name="CalculateTab_ScannedFileListBox" />
-                        <Button Margin="0 2" Grid.Row="1" Grid.Column="1" x:Name="CalculateTab_ExportExcelButton" Content="Export to Excel" />
-                        <Button Margin="0 2" Grid.Row="1" Grid.Column="3" x:Name="CalculateTab_ExportCsvButton" Content="Export to CSV" />
+                        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" x:Name="CalculateTab_ScannedFileListBox" SelectionChanged="CalculateTab_ScannedFileListBox_SelectionChanged" />
+                        <Button IsEnabled="False" Margin="0 2" Grid.Row="1" Grid.Column="1" x:Name="CalculateTab_ExportExcelButton" Content="Export all to Excel" />
+                        <Button IsEnabled="False" Margin="0 2" Grid.Row="1" Grid.Column="3" x:Name="CalculateTab_ExportCsvButton" Content="Export all to CSV" />
                     </Grid>
 
                     <Grid Grid.Row="6">
@@ -94,11 +94,10 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="65" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="65" />
-                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="21" />
                             <RowDefinition Height="21" />
                             <RowDefinition Height="21" />
                             <RowDefinition Height="21" />
@@ -109,34 +108,30 @@
                         <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Text="CRC-64 " />
                         <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Text="MD2 " />
                         <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Text="MD4 " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Text="MD5 " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right" Text="BLAKE2sp " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Text="SHA-1 " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" Text="SHA-256 " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="0" HorizontalAlignment="Right" Text="SHA-384 " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Right" Text="SHA-512 " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Right" Text="BLANK " />
-                        <TextBlock VerticalAlignment="Center" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Right" Text="BLANK " />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Text="MD5 " />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Text="BLAKE2sp " />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right" Text="SHA-1 " />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Text="SHA-256 " />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" Text="SHA-384 " />
+                        <TextBlock VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Right" Text="SHA-512 " />
 
-                        <TextBox Grid.Column="1" Grid.Row="0" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_CRC32Result" />
-                        <TextBox Grid.Column="1" Grid.Row="1" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_CRC64Result" />
-                        <TextBox Grid.Column="1" Grid.Row="2" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_MD2Result" />
-                        <TextBox Grid.Column="1" Grid.Row="3" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_MD4Result" />
-                        <TextBox Grid.Column="3" Grid.Row="0" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_MD5Result" />
-                        <TextBox Grid.Column="3" Grid.Row="1" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_BLAKE2spResult" />
-                        <TextBox Grid.Column="3" Grid.Row="2" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA1Result" />
-                        <TextBox Grid.Column="3" Grid.Row="3" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA256Result" />
-                        <TextBox Grid.Column="5" Grid.Row="0" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA384Result" />
-                        <TextBox Grid.Column="5" Grid.Row="1" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA512Result" />
-                        <TextBox Grid.Column="5" Grid.Row="2" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_BlankResult1" />
-                        <TextBox Grid.Column="5" Grid.Row="3" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_BlankResult2" />
+                        <local:ClickSelectTextBox Grid.Column="1" Grid.Row="0" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_CRC32Result" />
+                        <local:ClickSelectTextBox Grid.Column="1" Grid.Row="1" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_CRC64Result" />
+                        <local:ClickSelectTextBox Grid.Column="1" Grid.Row="2" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_MD2Result" />
+                        <local:ClickSelectTextBox Grid.Column="1" Grid.Row="3" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_MD4Result" />
+                        <local:ClickSelectTextBox Grid.Column="1" Grid.Row="4" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_MD5Result" />
+                        <local:ClickSelectTextBox Grid.Column="3" Grid.Row="0" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_BLAKE2spResult" />
+                        <local:ClickSelectTextBox Grid.Column="3" Grid.Row="1" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA1Result" />
+                        <local:ClickSelectTextBox Grid.Column="3" Grid.Row="2" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA256Result" />
+                        <local:ClickSelectTextBox Grid.Column="3" Grid.Row="3" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA384Result" />
+                        <local:ClickSelectTextBox Grid.Column="3" Grid.Row="4" IsReadOnly="True" Background="LightGray" x:Name="CalculateTab_SHA512Result" />
 
                     </Grid>
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="BatchCompareTab" Header="Batch Compare"></TabItem>
-            <TabItem x:Name="SettingsTab" Header="Settings"></TabItem>
+            <TabItem IsEnabled="False" x:Name="BatchCompareTab" Header="Batch Compare"></TabItem>
+            <TabItem IsEnabled="False" x:Name="SettingsTab" Header="Settings"></TabItem>
         </TabControl>
     </Border>
 </Window>
