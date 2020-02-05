@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HashCalc"
         mc:Ignorable="d"
-        Title="HashCalc" MinHeight="525" Height="610" Width="400">
+        Title="HashCalc" MinHeight="525" MinWidth="265" Height="610" Width="375">
     <Border Padding="5">
         <TabControl>
             <TabItem x:Name="CalculateTab" Header="Calculate">
@@ -48,9 +48,9 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="75" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
