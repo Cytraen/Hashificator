@@ -9,18 +9,13 @@ namespace HashCalc
     {
         public ClickSelectTextBox()
         {
-            AddHandler(PreviewMouseLeftButtonDownEvent,
-              new MouseButtonEventHandler(SelectivelyIgnoreMouseButton), true);
-            AddHandler(GotKeyboardFocusEvent,
-              new RoutedEventHandler(SelectAllText), true);
-            AddHandler(MouseDoubleClickEvent,
-              new RoutedEventHandler(SelectAllText), true);
+            AddHandler(PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton), true);
+            AddHandler(GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText), true);
+            AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(SelectAllText), true);
         }
 
-        private static void SelectivelyIgnoreMouseButton(object sender,
-                                                         MouseButtonEventArgs e)
+        private static void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
-            // Find the TextBox
             DependencyObject parent = e.OriginalSource as UIElement;
             while (parent != null && !(parent is TextBox))
                 parent = VisualTreeHelper.GetParent(parent);
@@ -38,8 +33,7 @@ namespace HashCalc
 
         private static void SelectAllText(object sender, RoutedEventArgs e)
         {
-            var textBox = e.OriginalSource as TextBox;
-            if (textBox != null)
+            if (e.OriginalSource is TextBox textBox)
                 textBox.SelectAll();
         }
     }
