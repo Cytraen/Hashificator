@@ -3,17 +3,14 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace HashCalc
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private Dictionary<string, Dictionary<string, string>> outputDict;
@@ -76,49 +73,96 @@ namespace HashCalc
 
             outputDict = new Dictionary<string, Dictionary<string, string>>();
 
-            foreach (string item in CalculateTab_InputFileListBox.Items)
+            var inputList = new string[CalculateTab_InputFileListBox.Items.Count];
+            CalculateTab_InputFileListBox.Items.CopyTo(inputList, 0);
+
+            var checkBoxes = new Dictionary<string, bool>
             {
-                outputDict[item] = new Dictionary<string, string>();
+                ["md2"] = CalculateTab_ScanMD2CheckBox.IsChecked ?? false,
+                ["md4"] = CalculateTab_ScanMD4CheckBox.IsChecked ?? false,
+                ["md5"] = CalculateTab_ScanMD5CheckBox.IsChecked ?? false,
+                ["sha1"] = CalculateTab_ScanSHA1CheckBox.IsChecked ?? false,
+                ["sha256"] = CalculateTab_ScanSHA256CheckBox.IsChecked ?? false,
+                ["sha384"] = CalculateTab_ScanSHA384CheckBox.IsChecked ?? false,
+                ["sha512"] = CalculateTab_ScanSHA512CheckBox.IsChecked ?? false
+            };
 
-                if (CalculateTab_ScanMD2CheckBox.IsChecked ?? false)
-                    outputDict[item]["md2"] = CalculateHash<MD2Digest>(item);
-                else
-                    outputDict[item]["md2"] = "";
+            var worker = new BackgroundWorker();
 
-                if (CalculateTab_ScanMD4CheckBox.IsChecked ?? false)
-                    outputDict[item]["md4"] = CalculateHash<MD4Digest>(item);
-                else
-                    outputDict[item]["md4"] = "";
+            worker.DoWork += workerWork;
 
-                if (CalculateTab_ScanMD5CheckBox.IsChecked ?? false)
-                    outputDict[item]["md5"] = CalculateHash<MD5Digest>(item);
-                else
-                    outputDict[item]["md5"] = "";
+            void workerWork(object obj, DoWorkEventArgs e)
+            {
+                Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(false)));
 
-                if (CalculateTab_ScanSHA1CheckBox.IsChecked ?? false)
-                    outputDict[item]["sha1"] = CalculateHash<Sha1Digest>(item);
-                else
-                    outputDict[item]["sha1"] = "";
+                foreach (var item in inputList)
+                {
+                    outputDict[item] = new Dictionary<string, string>();
 
-                if (CalculateTab_ScanSHA256CheckBox.IsChecked ?? false)
-                    outputDict[item]["sha256"] = CalculateHash<Sha256Digest>(item);
-                else
-                    outputDict[item]["sha256"] = "";
+                    if (checkBoxes["md2"])
+                        outputDict[item]["md2"] = CalculateHash<MD2Digest>(item);
+                    else
+                        outputDict[item]["md2"] = "";
 
-                if (CalculateTab_ScanSHA384CheckBox.IsChecked ?? false)
-                    outputDict[item]["sha384"] = CalculateHash<Sha384Digest>(item);
-                else
-                    outputDict[item]["sha384"] = "";
+                    if (checkBoxes["md4"])
+                        outputDict[item]["md4"] = CalculateHash<MD4Digest>(item);
+                    else
+                        outputDict[item]["md4"] = "";
 
-                if (CalculateTab_ScanSHA512CheckBox.IsChecked ?? false)
-                    outputDict[item]["sha512"] = CalculateHash<Sha512Digest>(item);
-                else
-                    outputDict[item]["sha512"] = "";
+                    if (checkBoxes["md5"])
+                        outputDict[item]["md5"] = CalculateHash<MD5Digest>(item);
+                    else
+                        outputDict[item]["md5"] = "";
 
-                CalculateTab_ScannedFileListBox.Items.Add(item);
+                    if (checkBoxes["sha1"])
+                        outputDict[item]["sha1"] = CalculateHash<Sha1Digest>(item);
+                    else
+                        outputDict[item]["sha1"] = "";
+
+                    if (checkBoxes["sha256"])
+                        outputDict[item]["sha256"] = CalculateHash<Sha256Digest>(item);
+                    else
+                        outputDict[item]["sha256"] = "";
+
+                    if (checkBoxes["sha384"])
+                        outputDict[item]["sha384"] = CalculateHash<Sha384Digest>(item);
+                    else
+                        outputDict[item]["sha384"] = "";
+
+                    if (checkBoxes["sha512"])
+                        outputDict[item]["sha512"] = CalculateHash<Sha512Digest>(item);
+                    else
+                        outputDict[item]["sha512"] = "";
+
+                    Dispatcher.BeginInvoke((Action)(() =>
+                    {
+                        CalculateTab_ScannedFileListBox.Items.Add(item);
+                        CalculateTab_InputFileListBox.Items.Remove(item);
+                        CalculateTab_ProgressBar.Value += 100 / inputList.Count();
+                    }));
+                }
+
+                Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(true)));
             }
 
-            CalculateTab_InputFileListBox.Items.Clear();
+            worker.RunWorkerAsync();
+        }
+
+        private void EnableAllCalculateTabButtons(bool yes)
+        {
+            CalculateTab_ProgressBar.Value = yes ? 100 : 0;
+            TaskbarItemInfo.ProgressValue = yes ? 100 : 0;
+            TaskbarItemInfo.ProgressState = yes ? System.Windows.Shell.TaskbarItemProgressState.Normal : System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
+            CalculateTab_AddButton.IsEnabled = yes;
+            CalculateTab_RemoveButton.IsEnabled = yes;
+            CalculateTab_CalculateButton.IsEnabled = yes;
+            CalculateTab_ScanMD2CheckBox.IsEnabled = yes;
+            CalculateTab_ScanMD4CheckBox.IsEnabled = yes;
+            CalculateTab_ScanMD5CheckBox.IsEnabled = yes;
+            CalculateTab_ScanSHA1CheckBox.IsEnabled = yes;
+            CalculateTab_ScanSHA256CheckBox.IsEnabled = yes;
+            CalculateTab_ScanSHA384CheckBox.IsEnabled = yes;
+            CalculateTab_ScanSHA512CheckBox.IsEnabled = yes;
         }
 
         private void CalculateTab_ScannedFileListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
