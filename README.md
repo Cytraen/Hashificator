@@ -1,3 +1,3 @@
 # HashCalc
 
-A cryptographic hash calculator for files and text.
+A simple checksum/cryptographic hash calculator.

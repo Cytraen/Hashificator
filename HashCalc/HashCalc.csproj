@@ -4,10 +4,27 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>hashtransparent_icon.ico</ApplicationIcon>
+    <Version>0.1.0.0</Version>
+    <Authors>ashakoor</Authors>
+    <Company />
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>HashTransparent.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/ashakoor/HashCalc</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <Copyright>Copyright © 2020 Abdul Shakoor</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="HashTransparent.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
