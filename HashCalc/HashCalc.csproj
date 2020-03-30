@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 	<PublishTrimmed>true</PublishTrimmed>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>hashtransparent_icon.ico</ApplicationIcon>
-    <Version>0.1.1.0</Version>
+    <Version>0.1.1.1</Version>
     <Authors>ashakoor</Authors>
     <Company />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

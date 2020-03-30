@@ -151,6 +151,7 @@ namespace HashCalc
         private void EnableAllCalculateTabButtons(bool yes)
         {
             CalculateTab_ProgressBar.Value = yes ? 100 : 0;
+            CalculateTab_ProgressBar.IsIndeterminate = yes ? false : true;
             TaskbarItemInfo.ProgressValue = yes ? 100 : 0;
             TaskbarItemInfo.ProgressState = yes ? System.Windows.Shell.TaskbarItemProgressState.Normal : System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
             CalculateTab_AddButton.IsEnabled = yes;
