@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 using System;
@@ -6,13 +6,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace HashCalc
 {
     public partial class MainWindow : Window
     {
+        [DllImport("user32")] public static extern int FlashWindow(IntPtr hwnd, bool bInvert);
+
         private Dictionary<string, Dictionary<string, string>> outputDict;
 
         public MainWindow()
@@ -150,10 +154,9 @@ namespace HashCalc
 
         private void EnableAllCalculateTabButtons(bool yes)
         {
-            CalculateTab_ProgressBar.Value = yes ? 100 : 0;
+            CalculateTab_ProgressBar.Value = 0;
             CalculateTab_ProgressBar.IsIndeterminate = yes ? false : true;
-            TaskbarItemInfo.ProgressValue = yes ? 100 : 0;
-            TaskbarItemInfo.ProgressState = yes ? System.Windows.Shell.TaskbarItemProgressState.Normal : System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
+            TaskbarItemInfo.ProgressState = yes ? System.Windows.Shell.TaskbarItemProgressState.None : System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
             CalculateTab_AddButton.IsEnabled = yes;
             CalculateTab_RemoveButton.IsEnabled = yes;
             CalculateTab_CalculateButton.IsEnabled = yes;
@@ -164,6 +167,11 @@ namespace HashCalc
             CalculateTab_ScanSHA256CheckBox.IsEnabled = yes;
             CalculateTab_ScanSHA384CheckBox.IsEnabled = yes;
             CalculateTab_ScanSHA512CheckBox.IsEnabled = yes;
+
+            if (yes)
+            {
+                FlashWindow(new WindowInteropHelper(this).Handle, true);
+            }
         }
 
         private void CalculateTab_ScannedFileListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
