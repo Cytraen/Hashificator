@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 using System;
@@ -77,6 +77,12 @@ namespace HashCalc
 
             outputDict = new Dictionary<string, Dictionary<string, string>>();
 
+            if (CalculateTab_InputFileListBox.Items.Count == 0)
+            {
+                MessageBox.Show("Please add at least one file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             var inputList = new string[CalculateTab_InputFileListBox.Items.Count];
             CalculateTab_InputFileListBox.Items.CopyTo(inputList, 0);
 
@@ -90,6 +96,12 @@ namespace HashCalc
                 ["sha384"] = CalculateTab_ScanSHA384CheckBox.IsChecked ?? false,
                 ["sha512"] = CalculateTab_ScanSHA512CheckBox.IsChecked ?? false
             };
+
+            if (checkBoxes.Values.Where(e => e.Equals(true)).Count() == 0)
+            {
+                MessageBox.Show("Please check at least one box.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             var worker = new BackgroundWorker();
 
@@ -171,6 +183,7 @@ namespace HashCalc
             if (yes)
             {
                 FlashWindow(new WindowInteropHelper(this).Handle, true);
+                MessageBox.Show("Job's done!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
