@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 
-namespace HashCalc
+namespace Hashificator
 {
     public partial class MainWindow : Window
     {

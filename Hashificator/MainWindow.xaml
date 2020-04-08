@@ -1,13 +1,13 @@
-﻿<Window x:Class="HashCalc.MainWindow"
+﻿<Window x:Class="Hashificator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HashCalc"
+        xmlns:local="clr-namespace:Hashificator"
         mc:Ignorable="d"
-        Title="HashCalc" MinHeight="525" MinWidth="265" Height="610" Width="375">
+        Title="Hashificator" MinHeight="525" MinWidth="265" Height="610" Width="375">
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo Description="HashCalc" />
+        <TaskbarItemInfo Description="Hashificator" />
     </Window.TaskbarItemInfo>
     <Border Padding="5">
         <TabControl>

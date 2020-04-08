@@ -1,7 +1,7 @@
-﻿<Application x:Class="HashCalc.App"
+﻿<Application x:Class="Hashificator.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:HashCalc"
+             xmlns:local="clr-namespace:Hashificator"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          
