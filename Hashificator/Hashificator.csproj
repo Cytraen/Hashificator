@@ -13,7 +13,7 @@
     <PackageIconUrl />
     <RepositoryUrl>https://github.com/ashakoor/Hashificator</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <Copyright>Copyright © 2020 Abdul Shakoor</Copyright>
+    <Copyright>Copyright © 2020 ashakoor</Copyright>
     <PackageLicenseFile>COPYING.md</PackageLicenseFile>
   </PropertyGroup>
 
