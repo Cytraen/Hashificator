@@ -6,7 +6,7 @@
 	<PublishTrimmed>true</PublishTrimmed>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>hashtransparent_icon.ico</ApplicationIcon>
-    <Version>0.1.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>ashakoor</Authors>
     <Company />
     <PackageIcon>HashTransparent.png</PackageIcon>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.6" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.10" />
   </ItemGroup>
 
   <ItemGroup>
