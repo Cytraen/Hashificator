@@ -133,6 +133,7 @@ namespace Hashificator
             {
                 Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(false)));
 
+                var startTime = DateTime.UtcNow;
                 foreach (var item in inputList)
                 {
                     var hashCollection = new HashCollection();
@@ -161,7 +162,9 @@ namespace Hashificator
                         CalculateTab_ProgressBar.Value += 100 / inputList.Count();
                     }));
                 }
+                var finishTime = DateTime.UtcNow;
 
+                MessageBox.Show($"Job's done!\nTook {Math.Round((finishTime - startTime).TotalSeconds, 2)} seconds.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(true)));
             }
 
@@ -195,7 +198,6 @@ namespace Hashificator
             if (yes)
             {
                 FlashWindow(new WindowInteropHelper(this).Handle, true);
-                MessageBox.Show("Job's done!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
