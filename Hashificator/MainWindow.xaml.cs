@@ -107,22 +107,23 @@ namespace Hashificator
             var inputList = new string[CalculateTab_InputFileListBox.Items.Count];
             CalculateTab_InputFileListBox.Items.CopyTo(inputList, 0);
 
-            var checkBoxes = new HashSelection();
+            var checkBoxes = new HashSelection
+            {
+                MD2 = CalculateTab_ScanMD2CheckBox.IsChecked ?? false,
+                MD4 = CalculateTab_ScanMD4CheckBox.IsChecked ?? false,
+                MD5 = CalculateTab_ScanMD5CheckBox.IsChecked ?? false,
 
-            checkBoxes.MD2 = CalculateTab_ScanMD2CheckBox.IsChecked ?? false;
-            checkBoxes.MD4 = CalculateTab_ScanMD4CheckBox.IsChecked ?? false;
-            checkBoxes.MD5 = CalculateTab_ScanMD5CheckBox.IsChecked ?? false;
+                Sha1 = CalculateTab_ScanSha1CheckBox.IsChecked ?? false,
+                Sha224 = CalculateTab_ScanSha224CheckBox.IsChecked ?? false,
+                Sha256 = CalculateTab_ScanSha256CheckBox.IsChecked ?? false,
+                Sha384 = CalculateTab_ScanSha384CheckBox.IsChecked ?? false,
+                Sha512 = CalculateTab_ScanSha512CheckBox.IsChecked ?? false,
 
-            checkBoxes.Sha1 = CalculateTab_ScanSha1CheckBox.IsChecked ?? false;
-            checkBoxes.Sha224 = CalculateTab_ScanSha224CheckBox.IsChecked ?? false;
-            checkBoxes.Sha256 = CalculateTab_ScanSha256CheckBox.IsChecked ?? false;
-            checkBoxes.Sha384 = CalculateTab_ScanSha384CheckBox.IsChecked ?? false;
-            checkBoxes.Sha512 = CalculateTab_ScanSha512CheckBox.IsChecked ?? false;
-
-            checkBoxes.Sha3_224 = CalculateTab_ScanSha3_224CheckBox.IsChecked ?? false;
-            checkBoxes.Sha3_256 = CalculateTab_ScanSha3_256CheckBox.IsChecked ?? false;
-            checkBoxes.Sha3_384 = CalculateTab_ScanSha3_384CheckBox.IsChecked ?? false;
-            checkBoxes.Sha3_512 = CalculateTab_ScanSha3_512CheckBox.IsChecked ?? false;
+                Sha3_224 = CalculateTab_ScanSha3_224CheckBox.IsChecked ?? false,
+                Sha3_256 = CalculateTab_ScanSha3_256CheckBox.IsChecked ?? false,
+                Sha3_384 = CalculateTab_ScanSha3_384CheckBox.IsChecked ?? false,
+                Sha3_512 = CalculateTab_ScanSha3_512CheckBox.IsChecked ?? false
+            };
 
             var worker = new BackgroundWorker();
 
@@ -170,7 +171,7 @@ namespace Hashificator
         private void EnableAllCalculateTabButtons(bool yes)
         {
             CalculateTab_ProgressBar.Value = 0;
-            CalculateTab_ProgressBar.IsIndeterminate = yes ? false : true;
+            CalculateTab_ProgressBar.IsIndeterminate = !yes;
             TaskbarItemInfo.ProgressState = yes ? System.Windows.Shell.TaskbarItemProgressState.None : System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
             CalculateTab_AddButton.IsEnabled = yes;
             CalculateTab_RemoveButton.IsEnabled = yes;
