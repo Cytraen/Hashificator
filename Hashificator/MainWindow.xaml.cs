@@ -24,11 +24,25 @@ namespace Hashificator
             InitializeComponent();
         }
 
-        private string CalculateHash<T>(string path) where T : IDigest, new()
+        private HashCollection CalculateHashes(string path, HashSelection hashes)
         {
-            IDigest hash = new T();
+            var hashDict = new Dictionary<string, IDigest>();
+            var results = new HashCollection();
 
-            byte[] result = new byte[hash.GetDigestSize()];
+            if (hashes.MD2) hashDict["MD2"] = new MD2Digest();
+            if (hashes.MD4) hashDict["MD4"] = new MD4Digest();
+            if (hashes.MD5) hashDict["MD5"] = new MD5Digest();
+
+            if (hashes.Sha1) hashDict["Sha1"] = new Sha1Digest();
+            if (hashes.Sha224) hashDict["Sha224"] = new Sha224Digest();
+            if (hashes.Sha256) hashDict["Sha256"] = new Sha256Digest();
+            if (hashes.Sha384) hashDict["Sha384"] = new Sha384Digest();
+            if (hashes.Sha512) hashDict["Sha512"] = new Sha512Digest();
+
+            if (hashes.Sha3_224) hashDict["Sha3_224"] = new Sha3Digest(224);
+            if (hashes.Sha3_256) hashDict["Sha3_256"] = new Sha3Digest(256);
+            if (hashes.Sha3_384) hashDict["Sha3_384"] = new Sha3Digest(384);
+            if (hashes.Sha3_512) hashDict["Sha3_512"] = new Sha3Digest(512);
 
             using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Delete | FileShare.ReadWrite))
             {
@@ -37,33 +51,38 @@ namespace Hashificator
 
                 while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    hash.BlockUpdate(buffer, 0, bytesRead);
+                    foreach (var (method, hash) in hashDict)
+                    {
+                        hash.BlockUpdate(buffer, 0, bytesRead);
+                    }
                 }
 
-                hash.DoFinal(result, 0);
-            }
-            return BitConverter.ToString(result).Replace("-", "");
-        }
-
-        private string CalculateSha3Hash(string path, int bitLength)
-        {
-            var hashAlgorithm = new Sha3Digest(bitLength);
-
-            byte[] result = new byte[bitLength / 8];
-
-            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Delete | FileShare.ReadWrite))
-            {
-                byte[] buffer = new byte[4092];
-                int bytesRead;
-
-                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                foreach (var (method, hash) in hashDict)
                 {
-                    hashAlgorithm.BlockUpdate(buffer, 0, bytesRead);
-                }
+                    var result = new byte[hash.GetDigestSize()];
+                    hash.DoFinal(result, 0);
+                    var resultString = BitConverter.ToString(result).Replace("-", "");
 
-                hashAlgorithm.DoFinal(result, 0);
+                    switch (method)
+                    {
+                        case "MD2": results.MD2 = resultString; break;
+                        case "MD4": results.MD4 = resultString; break;
+                        case "MD5": results.MD5 = resultString; break;
+
+                        case "Sha1": results.Sha1 = resultString; break;
+                        case "Sha224": results.Sha224 = resultString; break;
+                        case "Sha256": results.Sha256 = resultString; break;
+                        case "Sha384": results.Sha384 = resultString; break;
+                        case "Sha512": results.Sha512 = resultString; break;
+
+                        case "Sha3_224": results.Sha3_224 = resultString; break;
+                        case "Sha3_256": results.Sha3_256 = resultString; break;
+                        case "Sha3_384": results.Sha3_384 = resultString; break;
+                        case "Sha3_512": results.Sha3_512 = resultString; break;
+                    }
+                }
             }
-            return BitConverter.ToString(result).Replace("-", "");
+            return results;
         }
 
         private void CalculateTab_AddButton_Click(object sender, RoutedEventArgs e)
@@ -136,22 +155,7 @@ namespace Hashificator
                 var startTime = DateTime.UtcNow;
                 foreach (var item in inputList)
                 {
-                    var hashCollection = new HashCollection();
-
-                    if (checkBoxes.MD2) hashCollection.MD2 = CalculateHash<MD2Digest>(item);
-                    if (checkBoxes.MD4) hashCollection.MD4 = CalculateHash<MD4Digest>(item);
-                    if (checkBoxes.MD5) hashCollection.MD5 = CalculateHash<MD5Digest>(item);
-
-                    if (checkBoxes.Sha1) hashCollection.Sha1 = CalculateHash<Sha1Digest>(item);
-                    if (checkBoxes.Sha224) hashCollection.Sha224 = CalculateHash<Sha224Digest>(item);
-                    if (checkBoxes.Sha256) hashCollection.Sha256 = CalculateHash<Sha256Digest>(item);
-                    if (checkBoxes.Sha384) hashCollection.Sha384 = CalculateHash<Sha384Digest>(item);
-                    if (checkBoxes.Sha512) hashCollection.Sha512 = CalculateHash<Sha512Digest>(item);
-
-                    if (checkBoxes.Sha3_224) hashCollection.Sha3_224 = CalculateSha3Hash(item, 224);
-                    if (checkBoxes.Sha3_256) hashCollection.Sha3_256 = CalculateSha3Hash(item, 256);
-                    if (checkBoxes.Sha3_384) hashCollection.Sha3_384 = CalculateSha3Hash(item, 384);
-                    if (checkBoxes.Sha3_512) hashCollection.Sha3_512 = CalculateSha3Hash(item, 512);
+                    var hashCollection = CalculateHashes(item, checkBoxes);
 
                     _outputDict[item] = hashCollection;
 
