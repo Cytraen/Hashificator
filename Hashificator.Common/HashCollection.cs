@@ -1,4 +1,4 @@
-﻿namespace Hashificator
+﻿namespace Hashificator.Common
 {
     public class HashCollection
     {
