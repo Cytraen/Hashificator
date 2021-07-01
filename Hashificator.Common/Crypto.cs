@@ -9,7 +9,7 @@ namespace Hashificator.Common
 {
     public class Crypto
     {
-        public static HashCollection CalculateHashes(string path, HashSelection hashes, int maxThreads)
+        public static HashCollection CalculateHashes(string path, HashSelection hashes, byte maxThreads, uint bufferSize = 4095)
         {
             var hashDict = new Dictionary<string, IDigest>();
             var results = new HashCollection();
@@ -29,9 +29,9 @@ namespace Hashificator.Common
             if (hashes.Sha3_384) hashDict["Sha3_384"] = new Sha3Digest(384);
             if (hashes.Sha3_512) hashDict["Sha3_512"] = new Sha3Digest(512);
 
-            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Delete | FileShare.ReadWrite))
+            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                byte[] buffer = new byte[4096];
+                byte[] buffer = new byte[bufferSize];
                 int bytesRead;
 
                 while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
