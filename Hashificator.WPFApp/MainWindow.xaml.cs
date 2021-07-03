@@ -35,7 +35,7 @@ namespace Hashificator.WPFApp
             {
                 foreach (var fileName in openFileDialog.FileNames)
                 {
-                    CalculateTab_InputFileListBox.Items.Add(fileName);
+                    _ = CalculateTab_InputFileListBox.Items.Add(fileName);
                 }
             }
         }
@@ -81,6 +81,20 @@ namespace Hashificator.WPFApp
                 Sha3_512 = CalculateTab_ScanSha3_512CheckBox.IsChecked ?? false
             };
 
+            int threadCount;
+
+            if (!int.TryParse(MaxThreadsTextBox.Text, out threadCount))
+            {
+                threadCount = Math.Min(Environment.ProcessorCount / 4, 1);
+            }
+
+            uint bufferSize;
+
+            if (!uint.TryParse(BufferSizeTextBox.Text, out bufferSize))
+            {
+                bufferSize = 64;
+            }
+
             var worker = new BackgroundWorker();
 
             worker.DoWork += workerWork;
@@ -89,23 +103,24 @@ namespace Hashificator.WPFApp
             {
                 _ = Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(false)));
 
+
                 var startTime = DateTime.UtcNow;
                 foreach (var item in inputList)
                 {
-                    var hashCollection = Crypto.CalculateHashes(item, checkBoxes, 2);
+                    var hashCollection = Crypto.CalculateHashes(item, checkBoxes, threadCount, bufferSize * 1024);
 
                     _outputDict[item] = hashCollection;
 
                     _ = Dispatcher.BeginInvoke((Action)(() =>
                       {
-                          CalculateTab_ScannedFileListBox.Items.Add(item);
+                          _ = CalculateTab_ScannedFileListBox.Items.Add(item);
                           CalculateTab_InputFileListBox.Items.Remove(item);
                       }));
                 }
                 var finishTime = DateTime.UtcNow;
 
-                MessageBox.Show($"Job's done!\nTook {Math.Round((finishTime - startTime).TotalSeconds, 2)} seconds.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(true)));
+                _ = MessageBox.Show($"Job's done!\nTook {Math.Round((finishTime - startTime).TotalSeconds, 2)} seconds.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                _ = Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(true)));
             }
 
             worker.RunWorkerAsync();
