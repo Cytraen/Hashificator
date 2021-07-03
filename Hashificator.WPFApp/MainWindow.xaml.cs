@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -17,9 +18,14 @@ namespace Hashificator.WPFApp
 
         private Dictionary<string, HashCollection> _outputDict;
 
+        private static readonly Regex _numberOnlyRegex = new("[^0-9]+");
+
         public MainWindow()
         {
             InitializeComponent();
+
+            MaxThreadsTextBox.DataContext = App.Configuration;
+            BufferSizeTextBox.DataContext = App.Configuration;
         }
 
         private void CalculateTab_AddButton_Click(object sender, RoutedEventArgs e)
@@ -85,14 +91,14 @@ namespace Hashificator.WPFApp
 
             if (!int.TryParse(MaxThreadsTextBox.Text, out threadCount))
             {
-                threadCount = Math.Min(Environment.ProcessorCount / 4, 1);
+                threadCount = App.Configuration.ThreadCount;
             }
 
-            uint bufferSize;
+            int bufferSize;
 
-            if (!uint.TryParse(BufferSizeTextBox.Text, out bufferSize))
+            if (!int.TryParse(BufferSizeTextBox.Text, out bufferSize))
             {
-                bufferSize = 64;
+                bufferSize = App.Configuration.BufferSizeKiB;
             }
 
             var worker = new BackgroundWorker();
@@ -102,7 +108,6 @@ namespace Hashificator.WPFApp
             void workerWork(object obj, DoWorkEventArgs e)
             {
                 _ = Dispatcher.BeginInvoke((Action)(() => EnableAllCalculateTabButtons(false)));
-
 
                 var startTime = DateTime.UtcNow;
                 foreach (var item in inputList)
@@ -194,6 +199,36 @@ namespace Hashificator.WPFApp
                 CalculateTab_Sha3_384Result.Text = string.Empty;
                 CalculateTab_Sha3_512Result.Text = string.Empty;
             }
+        }
+
+        private static bool IsTextOnlyNumbers(string text)
+        {
+            return !_numberOnlyRegex.IsMatch(text);
+        }
+
+        private void NumericTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextOnlyNumbers(e.Text);
+        }
+
+        private async void MaxThreadsTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(MaxThreadsTextBox.Text))
+            {
+                App.Configuration.ThreadCount = int.Parse(MaxThreadsTextBox.Text);
+            }
+
+            await Config.SaveConfig(App.AppDataFolder, App.ConfigFile, App.Configuration);
+        }
+
+        private async void BufferSizeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(BufferSizeTextBox.Text))
+            {
+                App.Configuration.BufferSizeKiB = int.Parse(BufferSizeTextBox.Text);
+            }
+
+            await Config.SaveConfig(App.AppDataFolder, App.ConfigFile, App.Configuration);
         }
     }
 }

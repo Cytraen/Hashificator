@@ -32,14 +32,14 @@ namespace Hashificator.OptimizeTest
 
             var files = new string[] { tinyFile, smallFile, mediumFile };//, largeFile, hugeFile };
 
-            var results = new Dictionary<string, Dictionary<byte, Dictionary<uint, double>>>();
+            var results = new Dictionary<string, Dictionary<byte, Dictionary<int, double>>>();
 
             foreach (var file in files)
             {
-                results[file] = new Dictionary<byte, Dictionary<uint, double>>();
+                results[file] = new Dictionary<byte, Dictionary<int, double>>();
                 foreach (var threadCount in ThreadCounts())
                 {
-                    results[file][threadCount] = new Dictionary<uint, double>();
+                    results[file][threadCount] = new Dictionary<int, double>();
                     foreach (var bufferSize in BufferSizes().Select(x => x - 1))
                     {
                         var expandBufferSize = bufferSize + 1;
@@ -73,18 +73,18 @@ namespace Hashificator.OptimizeTest
                 }
             }
 
-            var resultDict = new Dictionary<string, List<Tuple<byte, uint, double>>>();
+            var resultDict = new Dictionary<string, List<Tuple<byte, int, double>>>();
 
             foreach (var (file, fileResults) in results)
             {
                 var fileName = file.Split('\\').Last();
-                var thisFileResults = new List<Tuple<byte, uint, double>>();
+                var thisFileResults = new List<Tuple<byte, int, double>>();
 
                 foreach (var (threadCount, threadResults) in fileResults)
                 {
                     foreach (var (bufferSize, time) in threadResults)
                     {
-                        thisFileResults.Add(new Tuple<byte, uint, double>(threadCount, bufferSize, time));
+                        thisFileResults.Add(new Tuple<byte, int, double>(threadCount, bufferSize, time));
                     }
                 }
 
@@ -99,9 +99,9 @@ namespace Hashificator.OptimizeTest
             _ = Console.ReadLine();
         }
 
-        private static IEnumerable<uint> BufferSizes(uint minSize = 4096, uint maxSize = 1024 * 1024 * 32, float multiplier = 2)
+        private static IEnumerable<int> BufferSizes(int minSize = 4096, int maxSize = 1024 * 1024 * 32, float multiplier = 2)
         {
-            for (uint i = minSize; i < maxSize + 1; i = (uint)Math.Floor(i * multiplier)) { yield return i; }
+            for (int i = minSize; i < maxSize + 1; i = (int)Math.Floor(i * multiplier)) { yield return i; }
         }
 
         private static IEnumerable<byte> ThreadCounts(byte minThreads = 1, byte maxThreads = byte.MaxValue, float multiplier = 2)

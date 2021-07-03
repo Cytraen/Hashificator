@@ -9,7 +9,7 @@ namespace Hashificator.Common
 {
     public class Crypto
     {
-        public static HashCollection CalculateHashes(string path, HashSelection hashes, int maxThreads, uint bufferSize = 4095)
+        public static HashCollection CalculateHashes(string path, HashSelection hashes, int maxThreads, int bufferSize)
         {
             var hashDict = new Dictionary<string, IDigest>();
             var results = new HashCollection();

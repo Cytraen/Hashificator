@@ -166,9 +166,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="Max Threads" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Row="0" Grid.Column="1" Height="25" HorizontalAlignment="Left" Width="59" x:Name="MaxThreadsTextBox" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Height="25" HorizontalAlignment="Left" Width="59" x:Name="MaxThreadsTextBox" Text="{Binding ThreadCount}"  PreviewTextInput="NumericTextBox_PreviewTextInput" TextChanged="MaxThreadsTextBox_TextChanged" />
                     <Label Grid.Row="1" Grid.Column="0" Content="Buffer Size (KiB)" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Row="1" Grid.Column="1" Height="25" HorizontalAlignment="Left" Width="59" x:Name="BufferSizeTextBox" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Height="25" HorizontalAlignment="Left" Width="59" x:Name="BufferSizeTextBox" Text="{Binding BufferSizeKiB}" PreviewTextInput="NumericTextBox_PreviewTextInput" TextChanged="BufferSizeTextBox_TextChanged" />
                 </Grid>
             </TabItem>
         </TabControl>
