@@ -71,32 +71,34 @@ namespace Hashificator.WPFApp
 
             var checkBoxes = new HashSelection
             {
-                MD2 = CalculateTab_ScanMD2CheckBox.IsChecked ?? false,
-                MD4 = CalculateTab_ScanMD4CheckBox.IsChecked ?? false,
                 MD5 = CalculateTab_ScanMD5CheckBox.IsChecked ?? false,
-
                 Sha1 = CalculateTab_ScanSha1CheckBox.IsChecked ?? false,
                 Sha224 = CalculateTab_ScanSha224CheckBox.IsChecked ?? false,
                 Sha256 = CalculateTab_ScanSha256CheckBox.IsChecked ?? false,
+
+                Sha512_224 = CalculateTab_ScanSha512_224CheckBox.IsChecked ?? false,
+                Sha512_256 = CalculateTab_ScanSha512_256CheckBox.IsChecked ?? false,
                 Sha384 = CalculateTab_ScanSha384CheckBox.IsChecked ?? false,
                 Sha512 = CalculateTab_ScanSha512CheckBox.IsChecked ?? false,
 
                 Sha3_224 = CalculateTab_ScanSha3_224CheckBox.IsChecked ?? false,
                 Sha3_256 = CalculateTab_ScanSha3_256CheckBox.IsChecked ?? false,
                 Sha3_384 = CalculateTab_ScanSha3_384CheckBox.IsChecked ?? false,
-                Sha3_512 = CalculateTab_ScanSha3_512CheckBox.IsChecked ?? false
+                Sha3_512 = CalculateTab_ScanSha3_512CheckBox.IsChecked ?? false,
+
+                Blake2s = CalculateTab_ScanBlake2sCheckBox.IsChecked ?? false,
+                Blake2b = CalculateTab_ScanBlake2bCheckBox.IsChecked ?? false,
+                Blake3 = CalculateTab_ScanBlake3CheckBox.IsChecked ?? false
             };
 
-            int threadCount;
 
-            if (!int.TryParse(MaxThreadsTextBox.Text, out threadCount))
+            if (!int.TryParse(MaxThreadsTextBox.Text, out var threadCount))
             {
                 threadCount = App.Configuration.ThreadCount;
             }
 
-            int bufferSize;
 
-            if (!int.TryParse(BufferSizeTextBox.Text, out bufferSize))
+            if (!int.TryParse(BufferSizeTextBox.Text, out var bufferSize))
             {
                 bufferSize = App.Configuration.BufferSizeKiB;
             }
@@ -140,13 +142,13 @@ namespace Hashificator.WPFApp
             CalculateTab_RemoveButton.IsEnabled = yes;
             CalculateTab_CalculateButton.IsEnabled = yes;
 
-            CalculateTab_ScanMD2CheckBox.IsEnabled = yes;
-            CalculateTab_ScanMD4CheckBox.IsEnabled = yes;
             CalculateTab_ScanMD5CheckBox.IsEnabled = yes;
-
             CalculateTab_ScanSha1CheckBox.IsEnabled = yes;
             CalculateTab_ScanSha224CheckBox.IsEnabled = yes;
             CalculateTab_ScanSha256CheckBox.IsEnabled = yes;
+
+            CalculateTab_ScanSha512_224CheckBox.IsEnabled = yes;
+            CalculateTab_ScanSha512_256CheckBox.IsEnabled = yes;
             CalculateTab_ScanSha384CheckBox.IsEnabled = yes;
             CalculateTab_ScanSha512CheckBox.IsEnabled = yes;
 
@@ -154,6 +156,10 @@ namespace Hashificator.WPFApp
             CalculateTab_ScanSha3_256CheckBox.IsEnabled = yes;
             CalculateTab_ScanSha3_384CheckBox.IsEnabled = yes;
             CalculateTab_ScanSha3_512CheckBox.IsEnabled = yes;
+
+            CalculateTab_ScanBlake2sCheckBox.IsEnabled = yes;
+            CalculateTab_ScanBlake2bCheckBox.IsEnabled = yes;
+            CalculateTab_ScanBlake3CheckBox.IsEnabled = yes;
 
             if (yes)
             {
@@ -167,13 +173,13 @@ namespace Hashificator.WPFApp
             {
                 var hashes = _outputDict[(string)e.AddedItems[0]];
 
-                CalculateTab_MD2Result.Text = hashes.MD2;
-                CalculateTab_MD4Result.Text = hashes.MD4;
                 CalculateTab_MD5Result.Text = hashes.MD5;
-
                 CalculateTab_Sha1Result.Text = hashes.Sha1;
                 CalculateTab_Sha224Result.Text = hashes.Sha224;
                 CalculateTab_Sha256Result.Text = hashes.Sha256;
+
+                CalculateTab_Sha512_224Result.Text = hashes.Sha512_224;
+                CalculateTab_Sha512_256Result.Text = hashes.Sha512_256;
                 CalculateTab_Sha384Result.Text = hashes.Sha384;
                 CalculateTab_Sha512Result.Text = hashes.Sha512;
 
@@ -181,16 +187,20 @@ namespace Hashificator.WPFApp
                 CalculateTab_Sha3_256Result.Text = hashes.Sha3_256;
                 CalculateTab_Sha3_384Result.Text = hashes.Sha3_384;
                 CalculateTab_Sha3_512Result.Text = hashes.Sha3_512;
+
+                CalculateTab_Blake2sResult.Text = hashes.Blake2s;
+                CalculateTab_Blake2bResult.Text = hashes.Blake2b;
+                CalculateTab_Blake3Result.Text = hashes.Blake3;
             }
             else
             {
-                CalculateTab_MD2Result.Text = string.Empty;
-                CalculateTab_MD4Result.Text = string.Empty;
                 CalculateTab_MD5Result.Text = string.Empty;
-
                 CalculateTab_Sha1Result.Text = string.Empty;
                 CalculateTab_Sha224Result.Text = string.Empty;
                 CalculateTab_Sha256Result.Text = string.Empty;
+
+                CalculateTab_Sha512_224Result.Text = string.Empty;
+                CalculateTab_Sha512_256Result.Text = string.Empty;
                 CalculateTab_Sha384Result.Text = string.Empty;
                 CalculateTab_Sha512Result.Text = string.Empty;
 
@@ -198,6 +208,10 @@ namespace Hashificator.WPFApp
                 CalculateTab_Sha3_256Result.Text = string.Empty;
                 CalculateTab_Sha3_384Result.Text = string.Empty;
                 CalculateTab_Sha3_512Result.Text = string.Empty;
+
+                CalculateTab_Blake2sResult.Text = string.Empty;
+                CalculateTab_Blake2bResult.Text = string.Empty;
+                CalculateTab_Blake3Result.Text = string.Empty;
             }
         }
 
