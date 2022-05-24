@@ -5,78 +5,77 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Hashificator.Common
+namespace Hashificator.Common;
+
+public class Crypto
 {
-    public class Crypto
+    public static HashCollection CalculateHashes(string path, HashSelection hashes, int maxThreads, int bufferSize)
     {
-        public static HashCollection CalculateHashes(string path, HashSelection hashes, int maxThreads, int bufferSize)
+        var hashDict = new Dictionary<string, IDigest>();
+        var results = new HashCollection();
+
+        if (hashes.MD5) hashDict["MD5"] = new MD5Digest();
+        if (hashes.Sha1) hashDict["Sha1"] = new Sha1Digest();
+        if (hashes.Sha224) hashDict["Sha224"] = new Sha224Digest();
+        if (hashes.Sha256) hashDict["Sha256"] = new Sha256Digest();
+
+        if (hashes.Sha512_224) hashDict["Sha512_224"] = new Sha512tDigest(224);
+        if (hashes.Sha512_256) hashDict["Sha512_256"] = new Sha512tDigest(256);
+        if (hashes.Sha384) hashDict["Sha384"] = new Sha384Digest();
+        if (hashes.Sha512) hashDict["Sha512"] = new Sha512Digest();
+
+        if (hashes.Sha3_224) hashDict["Sha3_224"] = new Sha3Digest(224);
+        if (hashes.Sha3_256) hashDict["Sha3_256"] = new Sha3Digest(256);
+        if (hashes.Sha3_384) hashDict["Sha3_384"] = new Sha3Digest(384);
+        if (hashes.Sha3_512) hashDict["Sha3_512"] = new Sha3Digest(512);
+
+        if (hashes.Blake2s) hashDict["Blake2s"] = new Blake2sDigest();
+        if (hashes.Blake2b) hashDict["Blake2b"] = new Blake2bDigest();
+
+        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
-            var hashDict = new Dictionary<string, IDigest>();
-            var results = new HashCollection();
+            byte[] buffer = new byte[bufferSize];
+            int bytesRead;
 
-            if (hashes.MD5) hashDict["MD5"] = new MD5Digest();
-            if (hashes.Sha1) hashDict["Sha1"] = new Sha1Digest();
-            if (hashes.Sha224) hashDict["Sha224"] = new Sha224Digest();
-            if (hashes.Sha256) hashDict["Sha256"] = new Sha256Digest();
-
-            if (hashes.Sha512_224) hashDict["Sha512_224"] = new Sha512tDigest(224);
-            if (hashes.Sha512_256) hashDict["Sha512_256"] = new Sha512tDigest(256);
-            if (hashes.Sha384) hashDict["Sha384"] = new Sha384Digest();
-            if (hashes.Sha512) hashDict["Sha512"] = new Sha512Digest();
-
-            if (hashes.Sha3_224) hashDict["Sha3_224"] = new Sha3Digest(224);
-            if (hashes.Sha3_256) hashDict["Sha3_256"] = new Sha3Digest(256);
-            if (hashes.Sha3_384) hashDict["Sha3_384"] = new Sha3Digest(384);
-            if (hashes.Sha3_512) hashDict["Sha3_512"] = new Sha3Digest(512);
-
-            if (hashes.Blake2s) hashDict["Blake2s"] = new Blake2sDigest();
-            if (hashes.Blake2b) hashDict["Blake2b"] = new Blake2bDigest();
-
-            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
             {
-                byte[] buffer = new byte[bufferSize];
-                int bytesRead;
-
-                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+                _ = Parallel.ForEach(hashDict, new ParallelOptions { MaxDegreeOfParallelism = maxThreads }, hashPair =>
                 {
-                    _ = Parallel.ForEach(hashDict, new ParallelOptions { MaxDegreeOfParallelism = maxThreads }, hashPair =>
-                    {
-                        hashPair.Value.BlockUpdate(buffer, 0, bytesRead);
-                    });
-                }
+                    hashPair.Value.BlockUpdate(buffer, 0, bytesRead);
+                });
+            }
 
-                foreach (var (method, hash) in hashDict)
+            foreach (var (method, hash) in hashDict)
+            {
+                var result = new byte[hash.GetDigestSize()];
+                _ = hash.DoFinal(result, 0);
+                var resultString = BitConverter.ToString(result).Replace("-", "");
+
+                switch (method)
                 {
-                    var result = new byte[hash.GetDigestSize()];
-                    _ = hash.DoFinal(result, 0);
-                    var resultString = BitConverter.ToString(result).Replace("-", "");
+                    case "MD5": results.MD5 = resultString; break;
+                    case "Sha1": results.Sha1 = resultString; break;
+                    case "Sha224": results.Sha224 = resultString; break;
+                    case "Sha256": results.Sha256 = resultString; break;
 
-                    switch (method)
-                    {
-                        case "MD5": results.MD5 = resultString; break;
-                        case "Sha1": results.Sha1 = resultString; break;
-                        case "Sha224": results.Sha224 = resultString; break;
-                        case "Sha256": results.Sha256 = resultString; break;
+                    case "Sha512_224": results.Sha512_224 = resultString; break;
+                    case "Sha512_256": results.Sha512_256 = resultString; break;
+                    case "Sha384": results.Sha384 = resultString; break;
+                    case "Sha512": results.Sha512 = resultString; break;
 
-                        case "Sha512_224": results.Sha512_224 = resultString; break;
-                        case "Sha512_256": results.Sha512_256 = resultString; break;
-                        case "Sha384": results.Sha384 = resultString; break;
-                        case "Sha512": results.Sha512 = resultString; break;
+                    case "Sha3_224": results.Sha3_224 = resultString; break;
+                    case "Sha3_256": results.Sha3_256 = resultString; break;
+                    case "Sha3_384": results.Sha3_384 = resultString; break;
+                    case "Sha3_512": results.Sha3_512 = resultString; break;
 
-                        case "Sha3_224": results.Sha3_224 = resultString; break;
-                        case "Sha3_256": results.Sha3_256 = resultString; break;
-                        case "Sha3_384": results.Sha3_384 = resultString; break;
-                        case "Sha3_512": results.Sha3_512 = resultString; break;
+                    case "Blake2s": results.Blake2s = resultString; break;
+                    case "Blake2b": results.Blake2b = resultString; break;
 
-                        case "Blake2s": results.Blake2s = resultString; break;
-                        case "Blake2b": results.Blake2b = resultString; break;
-
-                        default:
-                            throw new NotSupportedException();
-                    }
+                    default:
+                        throw new NotSupportedException();
                 }
             }
-            return results;
         }
+        return results;
     }
 }

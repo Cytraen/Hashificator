@@ -3,38 +3,37 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Hashificator.WPFApp
+namespace Hashificator.WPFApp;
+
+public class ClickSelectTextBox : TextBox
 {
-    public class ClickSelectTextBox : TextBox
+    public ClickSelectTextBox()
     {
-        public ClickSelectTextBox()
-        {
-            AddHandler(PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton), true);
-            AddHandler(GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText), true);
-            AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(SelectAllText), true);
-        }
+        AddHandler(PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton), true);
+        AddHandler(GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText), true);
+        AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(SelectAllText), true);
+    }
 
-        private static void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
-        {
-            DependencyObject parent = e.OriginalSource as UIElement;
-            while (parent != null && !(parent is TextBox))
-                parent = VisualTreeHelper.GetParent(parent);
+    private static void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
+    {
+        DependencyObject parent = e.OriginalSource as UIElement;
+        while (parent != null && !(parent is TextBox))
+            parent = VisualTreeHelper.GetParent(parent);
 
-            if (parent != null)
+        if (parent != null)
+        {
+            var textBox = (TextBox)parent;
+            if (!textBox.IsKeyboardFocusWithin)
             {
-                var textBox = (TextBox)parent;
-                if (!textBox.IsKeyboardFocusWithin)
-                {
-                    textBox.Focus();
-                    e.Handled = true;
-                }
+                textBox.Focus();
+                e.Handled = true;
             }
         }
+    }
 
-        private static void SelectAllText(object sender, RoutedEventArgs e)
-        {
-            if (e.OriginalSource is TextBox textBox)
-                textBox.SelectAll();
-        }
+    private static void SelectAllText(object sender, RoutedEventArgs e)
+    {
+        if (e.OriginalSource is TextBox textBox)
+            textBox.SelectAll();
     }
 }
